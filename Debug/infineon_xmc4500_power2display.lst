@@ -17,21 +17,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   6 .debug_aranges 00000da0  00000000  00000000  00018168  2**3
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   0001678c  00000000  00000000  00018f08  2**0
+  7 .debug_info   0001677e  00000000  00000000  00018f08  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 0000296e  00000000  00000000  0002f694  2**0
+  8 .debug_abbrev 0000296e  00000000  00000000  0002f686  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00005ee7  00000000  00000000  00032002  2**0
+  9 .debug_line   00005ee4  00000000  00000000  00031ff4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00004408  00000000  00000000  00037eec  2**2
+ 10 .debug_frame  00004408  00000000  00000000  00037ed8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00008b43  00000000  00000000  0003c2f4  2**0
+ 11 .debug_str    00008b3b  00000000  00000000  0003c2e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00007829  00000000  00000000  00044e37  2**0
+ 12 .debug_loc    00007829  00000000  00000000  00044e1b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000c18  00000000  00000000  0004c660  2**0
+ 13 .debug_ranges 00000c18  00000000  00000000  0004c644  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .build_attributes 00000c06  00000000  00000000  0004d278  2**0
+ 14 .build_attributes 00000c06  00000000  00000000  0004d25c  2**0
                   CONTENTS, READONLY
 
 Disassembly of section .text:
@@ -10047,13 +10047,13 @@ void float2string(float value, char *variable, char *unit, char *str){
 int main(void)
 {
  8003780:	b580      	push	{r7, lr}
- 8003782:	b09e      	sub	sp, #120	; 0x78
+ 8003782:	b09c      	sub	sp, #112	; 0x70
  8003784:	af00      	add	r7, sp, #0
 	//DAVE
 	DAVE_Init();
  8003786:	f7ff fed1 	bl	800352c <DAVE_Init>
+	float adc;
 	float voltage;
-	float current;
 	float power;
 
 	//OPEN COMMUNICATION WITH I2C
@@ -10075,89 +10075,89 @@ int main(void)
 	while(1)
 	{
 		//GET RESULT FROM ADC
-		adc = result;
+		adc = result * 1.4471; //1.4471 = adjustment factor
  80037a8:	4b2d      	ldr	r3, [pc, #180]	; (8003860 <main+0xe0>)
  80037aa:	881b      	ldrh	r3, [r3, #0]
- 80037ac:	ee07 3a90 	vmov	s15, r3
- 80037b0:	eef8 7a67 	vcvt.f32.u32	s15, s15
- 80037b4:	edc7 7a1c 	vstr	s15, [r7, #112]	; 0x70
+ 80037ac:	4618      	mov	r0, r3
+ 80037ae:	f000 f9e1 	bl	8003b74 <__aeabi_i2d>
+ 80037b2:	4602      	mov	r2, r0
+ 80037b4:	460b      	mov	r3, r1
+ 80037b6:	4610      	mov	r0, r2
+ 80037b8:	4619      	mov	r1, r3
+ 80037ba:	a321      	add	r3, pc, #132	; (adr r3, 8003840 <main+0xc0>)
+ 80037bc:	e9d3 2300 	ldrd	r2, r3, [r3]
+ 80037c0:	f000 fa3e 	bl	8003c40 <__aeabi_dmul>
+ 80037c4:	4602      	mov	r2, r0
+ 80037c6:	460b      	mov	r3, r1
+ 80037c8:	4610      	mov	r0, r2
+ 80037ca:	4619      	mov	r1, r3
+ 80037cc:	f000 fcfa 	bl	80041c4 <__aeabi_d2f>
+ 80037d0:	4603      	mov	r3, r0
+ 80037d2:	66bb      	str	r3, [r7, #104]	; 0x68
 
 		//CALCULATE
 		voltage = adc * (3.3/4096.0);
- 80037b8:	6f38      	ldr	r0, [r7, #112]	; 0x70
- 80037ba:	f000 f9ed 	bl	8003b98 <__aeabi_f2d>
- 80037be:	4602      	mov	r2, r0
- 80037c0:	460b      	mov	r3, r1
- 80037c2:	4610      	mov	r0, r2
- 80037c4:	4619      	mov	r1, r3
- 80037c6:	a31e      	add	r3, pc, #120	; (adr r3, 8003840 <main+0xc0>)
- 80037c8:	e9d3 2300 	ldrd	r2, r3, [r3]
- 80037cc:	f000 fa38 	bl	8003c40 <__aeabi_dmul>
- 80037d0:	4602      	mov	r2, r0
- 80037d2:	460b      	mov	r3, r1
- 80037d4:	4610      	mov	r0, r2
- 80037d6:	4619      	mov	r1, r3
- 80037d8:	f000 fcf4 	bl	80041c4 <__aeabi_d2f>
- 80037dc:	4603      	mov	r3, r0
- 80037de:	66fb      	str	r3, [r7, #108]	; 0x6c
-		current = voltage * 10;
- 80037e0:	edd7 7a1b 	vldr	s15, [r7, #108]	; 0x6c
- 80037e4:	eeb2 7a04 	vmov.f32	s14, #36	; 0x24
- 80037e8:	ee67 7a87 	vmul.f32	s15, s15, s14
- 80037ec:	edc7 7a1a 	vstr	s15, [r7, #104]	; 0x68
-		power = current * 230;
- 80037f0:	edd7 7a1a 	vldr	s15, [r7, #104]	; 0x68
- 80037f4:	ed9f 7a1b 	vldr	s14, [pc, #108]	; 8003864 <main+0xe4>
- 80037f8:	ee67 7a87 	vmul.f32	s15, s15, s14
- 80037fc:	edc7 7a1d 	vstr	s15, [r7, #116]	; 0x74
-		//Smoothing the measurement and compensating environmental influences
-		if(voltage <= 0.03){
- 8003800:	6ef8      	ldr	r0, [r7, #108]	; 0x6c
- 8003802:	f000 f9c9 	bl	8003b98 <__aeabi_f2d>
- 8003806:	4602      	mov	r2, r0
- 8003808:	460b      	mov	r3, r1
- 800380a:	4610      	mov	r0, r2
- 800380c:	4619      	mov	r1, r3
- 800380e:	a30e      	add	r3, pc, #56	; (adr r3, 8003848 <main+0xc8>)
- 8003810:	e9d3 2300 	ldrd	r2, r3, [r3]
- 8003814:	f000 fc90 	bl	8004138 <__aeabi_dcmple>
- 8003818:	4603      	mov	r3, r0
- 800381a:	2b00      	cmp	r3, #0
- 800381c:	d005      	beq.n	800382a <main+0xaa>
-			current = 0;
- 800381e:	f04f 0300 	mov.w	r3, #0
- 8003822:	66bb      	str	r3, [r7, #104]	; 0x68
+ 80037d4:	6eb8      	ldr	r0, [r7, #104]	; 0x68
+ 80037d6:	f000 f9df 	bl	8003b98 <__aeabi_f2d>
+ 80037da:	4602      	mov	r2, r0
+ 80037dc:	460b      	mov	r3, r1
+ 80037de:	4610      	mov	r0, r2
+ 80037e0:	4619      	mov	r1, r3
+ 80037e2:	a319      	add	r3, pc, #100	; (adr r3, 8003848 <main+0xc8>)
+ 80037e4:	e9d3 2300 	ldrd	r2, r3, [r3]
+ 80037e8:	f000 fa2a 	bl	8003c40 <__aeabi_dmul>
+ 80037ec:	4602      	mov	r2, r0
+ 80037ee:	460b      	mov	r3, r1
+ 80037f0:	4610      	mov	r0, r2
+ 80037f2:	4619      	mov	r1, r3
+ 80037f4:	f000 fce6 	bl	80041c4 <__aeabi_d2f>
+ 80037f8:	4603      	mov	r3, r0
+ 80037fa:	667b      	str	r3, [r7, #100]	; 0x64
+		power = voltage * 1000;
+ 80037fc:	edd7 7a19 	vldr	s15, [r7, #100]	; 0x64
+ 8003800:	ed9f 7a18 	vldr	s14, [pc, #96]	; 8003864 <main+0xe4>
+ 8003804:	ee67 7a87 	vmul.f32	s15, s15, s14
+ 8003808:	edc7 7a1b 	vstr	s15, [r7, #108]	; 0x6c
+		//Smoothing the measurement and compensating permanent 0.3V output from DAC
+		if(voltage <= 0.5){
+ 800380c:	edd7 7a19 	vldr	s15, [r7, #100]	; 0x64
+ 8003810:	eeb6 7a00 	vmov.f32	s14, #96	; 0x60
+ 8003814:	eef4 7ac7 	vcmpe.f32	s15, s14
+ 8003818:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 800381c:	d802      	bhi.n	8003824 <main+0xa4>
 			power = 0;
- 8003824:	f04f 0300 	mov.w	r3, #0
- 8003828:	677b      	str	r3, [r7, #116]	; 0x74
+ 800381e:	f04f 0300 	mov.w	r3, #0
+ 8003822:	66fb      	str	r3, [r7, #108]	; 0x6c
 		}
 
 		//POWER STRING
 		char power_str [100];
 		float2string(power, "Power:", "W", power_str);
- 800382a:	1d3b      	adds	r3, r7, #4
- 800382c:	6f78      	ldr	r0, [r7, #116]	; 0x74
- 800382e:	490e      	ldr	r1, [pc, #56]	; (8003868 <main+0xe8>)
- 8003830:	4a0e      	ldr	r2, [pc, #56]	; (800386c <main+0xec>)
- 8003832:	f7ff ff43 	bl	80036bc <float2string>
+ 8003824:	463b      	mov	r3, r7
+ 8003826:	6ef8      	ldr	r0, [r7, #108]	; 0x6c
+ 8003828:	490f      	ldr	r1, [pc, #60]	; (8003868 <main+0xe8>)
+ 800382a:	4a10      	ldr	r2, [pc, #64]	; (800386c <main+0xec>)
+ 800382c:	f7ff ff46 	bl	80036bc <float2string>
 
 		//DISPLAY THE STRING'S
 		ssd1306_text(power_str);
- 8003836:	1d3b      	adds	r3, r7, #4
- 8003838:	4618      	mov	r0, r3
- 800383a:	f7ff ff25 	bl	8003688 <ssd1306_text>
+ 8003830:	463b      	mov	r3, r7
+ 8003832:	4618      	mov	r0, r3
+ 8003834:	f7ff ff28 	bl	8003688 <ssd1306_text>
 	}
- 800383e:	e7b3      	b.n	80037a8 <main+0x28>
- 8003840:	66666666 	.word	0x66666666
- 8003844:	3f4a6666 	.word	0x3f4a6666
- 8003848:	eb851eb8 	.word	0xeb851eb8
- 800384c:	3f9eb851 	.word	0x3f9eb851
+ 8003838:	e7b6      	b.n	80037a8 <main+0x28>
+ 800383a:	bf00      	nop
+ 800383c:	f3af 8000 	nop.w
+ 8003840:	5460aa65 	.word	0x5460aa65
+ 8003844:	3ff72752 	.word	0x3ff72752
+ 8003848:	66666666 	.word	0x66666666
+ 800384c:	3f4a6666 	.word	0x3f4a6666
  8003850:	2000ffc0 	.word	0x2000ffc0
  8003854:	10624dd3 	.word	0x10624dd3
  8003858:	20000034 	.word	0x20000034
  800385c:	08003659 	.word	0x08003659
  8003860:	20000398 	.word	0x20000398
- 8003864:	43660000 	.word	0x43660000
+ 8003864:	447a0000 	.word	0x447a0000
  8003868:	080084bc 	.word	0x080084bc
  800386c:	080084c4 	.word	0x080084c4
 

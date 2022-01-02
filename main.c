@@ -78,7 +78,6 @@ int main(void)
 	//ADC VARIABLES
 	float adc;
 	float voltage;
-	float current;
 	float power;
 
 	//OPEN COMMUNICATION WITH I2C
@@ -88,15 +87,13 @@ int main(void)
 	while(1)
 	{
 		//GET RESULT FROM ADC
-		adc = result;
+		adc = result * 1.4471; //1.4471 = adjustment factor
 
 		//CALCULATE
 		voltage = adc * (3.3/4096.0);
-		current = voltage * 10;
-		power = current * 230;
-		//Smoothing the measurement and compensating environmental influences
-		if(voltage <= 0.03){
-			current = 0;
+		power = voltage * 1000;
+		//Smoothing the measurement and compensating permanent 0.3V output from DAC
+		if(voltage <= 0.5){
 			power = 0;
 		}
 
