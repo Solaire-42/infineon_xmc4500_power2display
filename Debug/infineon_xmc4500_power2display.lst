@@ -9936,18 +9936,18 @@ void ssd1306_text(char *data1){
  800368a:	b082      	sub	sp, #8
  800368c:	af00      	add	r7, sp, #0
  800368e:	6078      	str	r0, [r7, #4]
-	ssd1306_Fill(White);
- 8003690:	2001      	movs	r0, #1
+	ssd1306_Fill(Black);
+ 8003690:	2000      	movs	r0, #0
  8003692:	f7fd f803 	bl	800069c <ssd1306_Fill>
 	ssd1306_SetCursor(2, 1);
  8003696:	2002      	movs	r0, #2
  8003698:	2101      	movs	r1, #1
  800369a:	f7fd f96b 	bl	8000974 <ssd1306_SetCursor>
-	ssd1306_WriteString(data1, Font_6x8, Black);
+	ssd1306_WriteString(data1, Font_6x8, White);
  800369e:	4b06      	ldr	r3, [pc, #24]	; (80036b8 <ssd1306_text+0x30>)
  80036a0:	6878      	ldr	r0, [r7, #4]
  80036a2:	e893 0006 	ldmia.w	r3, {r1, r2}
- 80036a6:	2300      	movs	r3, #0
+ 80036a6:	2301      	movs	r3, #1
  80036a8:	f7fd f93a 	bl	8000920 <ssd1306_WriteString>
 	ssd1306_UpdateScreen();
  80036ac:	f7fd f818 	bl	80006e0 <ssd1306_UpdateScreen>
