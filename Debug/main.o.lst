@@ -2467,9 +2467,9 @@
  387              	 .global __aeabi_d2iz
  388 0005 000000   	 .align 2
  389              	.LC2:
- 390 0008 25732025 	 .ascii "%s %s%d.%02d %s\000"
+ 390 0008 25732025 	 .ascii "%s %s%d.%01d %s\000"
  390      7325642E 
- 390      25303264 
+ 390      25303164 
  390      20257300 
  391              	 .section .text.float2string,"ax",%progbits
  392              	 .align 2
@@ -2532,13 +2532,13 @@
  445              	 .loc 2 63 0 discriminator 4
  446 0040 C7ED087A 	 fsts s15,[r7,#32]
   64:../main.c     **** 
-  65:../main.c     **** 	int tmpInt1 = tmpVal;                  	// Get the integer (678)
+  65:../main.c     **** 	int tmpInt1 = tmpVal;                  	// Get the integer
  447              	 .loc 2 65 0 is_stmt 1 discriminator 4
  448 0044 D7ED087A 	 flds s15,[r7,#32]
  449 0048 FDEEE77A 	 ftosizs s15,s15
  450 004c 17EE903A 	 fmrs r3,s15
  451 0050 FB61     	 str r3,[r7,#28]
-  66:../main.c     **** 	float tmpFrac = tmpVal - tmpInt1;      	// Get fraction (0.0123)
+  66:../main.c     **** 	float tmpFrac = tmpVal - tmpInt1;      	// Get fraction
  452              	 .loc 2 66 0 discriminator 4
  453 0052 FB69     	 ldr r3,[r7,#28]
  454 0054 07EE903A 	 fmsr s15,r3
@@ -2546,10 +2546,10 @@
  456 005c 97ED087A 	 flds s14,[r7,#32]
  457 0060 77EE677A 	 fsubs s15,s14,s15
  458 0064 C7ED067A 	 fsts s15,[r7,#24]
-  67:../main.c     **** 	int tmpInt2 = trunc(tmpFrac * 100);  	// Turn into integer (123) - For changing decimal place: cha
+  67:../main.c     **** 	int tmpInt2 = trunc(tmpFrac * 10);  	// Turn into integer - For changing decimal place: change 10 
  459              	 .loc 2 67 0 discriminator 4
  460 0068 D7ED067A 	 flds s15,[r7,#24]
- 461 006c 9FED147A 	 flds s14,.L37+8
+ 461 006c B2EE047A 	 fconsts s14,#36
  462 0070 67EE877A 	 fmuls s15,s15,s14
  463 0074 17EE900A 	 fmrs r0,s15
  464 0078 FFF7FEFF 	 bl __aeabi_f2d
@@ -2566,7 +2566,7 @@
  475 0094 0346     	 mov r3,r0
  476 0096 7B61     	 str r3,[r7,#20]
   68:../main.c     **** 
-  69:../main.c     **** 	sprintf(str, "%s %s%d.%02d %s", variable, tmpSign, tmpInt1, tmpInt2, unit);
+  69:../main.c     **** 	sprintf(str, "%s %s%d.%01d %s", variable, tmpSign, tmpInt1, tmpInt2, unit);
  477              	 .loc 2 69 0 discriminator 4
  478 0098 FB69     	 ldr r3,[r7,#28]
  479 009a 0093     	 str r3,[sp]
@@ -2575,7 +2575,7 @@
  482 00a0 7B68     	 ldr r3,[r7,#4]
  483 00a2 0293     	 str r3,[sp,#8]
  484 00a4 3868     	 ldr r0,[r7]
- 485 00a6 0749     	 ldr r1,.L37+12
+ 485 00a6 0649     	 ldr r1,.L37+8
  486 00a8 BA68     	 ldr r2,[r7,#8]
  487 00aa 7B6A     	 ldr r3,[r7,#36]
  488 00ac FFF7FEFF 	 bl sprintf
@@ -2594,12 +2594,12 @@
  500              	.L37:
  501 00b8 00000000 	 .word .LC0
  502 00bc 04000000 	 .word .LC1
- 503 00c0 0000C842 	 .word 1120403456
- 504 00c4 08000000 	 .word .LC2
- 505              	 .cfi_endproc
- 506              	.LFE411:
- 508              	 .global __aeabi_dmul
- 509              	 .global __aeabi_d2f
+ 503 00c0 08000000 	 .word .LC2
+ 504              	 .cfi_endproc
+ 505              	.LFE411:
+ 507              	 .global __aeabi_dmul
+ 508              	 .global __aeabi_d2f
+ 509              	 .global __aeabi_dcmple
  510              	 .section .rodata
  511              	 .align 2
  512              	.LC3:
@@ -2648,44 +2648,44 @@
   84:../main.c     **** 	//OPEN COMMUNICATION WITH I2C
   85:../main.c     **** 	SysTick_Config(SystemCoreClock / 1000);
  542              	 .loc 2 85 0
- 543 000a 254B     	 ldr r3,.L41+8
+ 543 000a 314B     	 ldr r3,.L44+16
  544 000c 1B68     	 ldr r3,[r3]
- 545 000e 254A     	 ldr r2,.L41+12
+ 545 000e 314A     	 ldr r2,.L44+20
  546 0010 A2FB0323 	 umull r2,r3,r2,r3
  547 0014 9B09     	 lsrs r3,r3,#6
  548 0016 1846     	 mov r0,r3
  549 0018 FFF7FEFF 	 bl SysTick_Config
   86:../main.c     **** 	ssd1306_Init(I2C_MASTER_0.channel, &delay_ms);
  550              	 .loc 2 86 0
- 551 001c 224B     	 ldr r3,.L41+16
+ 551 001c 2E4B     	 ldr r3,.L44+24
  552 001e 1B68     	 ldr r3,[r3]
  553 0020 1846     	 mov r0,r3
- 554 0022 2249     	 ldr r1,.L41+20
+ 554 0022 2E49     	 ldr r1,.L44+28
  555 0024 FFF7FEFF 	 bl ssd1306_Init
- 556              	.L40:
+ 556              	.L42:
  557              	.LBB2:
   87:../main.c     **** 
   88:../main.c     **** 	while(1)
   89:../main.c     **** 	{
   90:../main.c     **** 		//GET RESULT FROM ADC
   91:../main.c     **** 		adc = result;
- 558              	 .loc 2 91 0 discriminator 1
- 559 0028 214B     	 ldr r3,.L41+24
+ 558              	 .loc 2 91 0
+ 559 0028 2D4B     	 ldr r3,.L44+32
  560 002a 1B88     	 ldrh r3,[r3]
  561 002c 07EE903A 	 fmsr s15,r3
  562 0030 F8EE677A 	 fuitos s15,s15
- 563 0034 C7ED1D7A 	 fsts s15,[r7,#116]
+ 563 0034 C7ED1C7A 	 fsts s15,[r7,#112]
   92:../main.c     **** 
   93:../main.c     **** 		//CALCULATE
   94:../main.c     **** 		voltage = adc * (3.3/4096.0);
- 564              	 .loc 2 94 0 discriminator 1
- 565 0038 786F     	 ldr r0,[r7,#116]
+ 564              	 .loc 2 94 0
+ 565 0038 386F     	 ldr r0,[r7,#112]
  566 003a FFF7FEFF 	 bl __aeabi_f2d
  567 003e 0246     	 mov r2,r0
  568 0040 0B46     	 mov r3,r1
  569 0042 1046     	 mov r0,r2
  570 0044 1946     	 mov r1,r3
- 571 0046 14A3     	 adr r3,.L41
+ 571 0046 1EA3     	 adr r3,.L44
  572 0048 D3E90023 	 ldrd r2,[r3]
  573 004c FFF7FEFF 	 bl __aeabi_dmul
  574 0050 0246     	 mov r2,r0
@@ -2694,73 +2694,100 @@
  577 0056 1946     	 mov r1,r3
  578 0058 FFF7FEFF 	 bl __aeabi_d2f
  579 005c 0346     	 mov r3,r0
- 580 005e 3B67     	 str r3,[r7,#112]
+ 580 005e FB66     	 str r3,[r7,#108]
   95:../main.c     **** 		current = voltage * 10;
- 581              	 .loc 2 95 0 discriminator 1
- 582 0060 D7ED1C7A 	 flds s15,[r7,#112]
+ 581              	 .loc 2 95 0
+ 582 0060 D7ED1B7A 	 flds s15,[r7,#108]
  583 0064 B2EE047A 	 fconsts s14,#36
  584 0068 67EE877A 	 fmuls s15,s15,s14
- 585 006c C7ED1B7A 	 fsts s15,[r7,#108]
+ 585 006c C7ED1A7A 	 fsts s15,[r7,#104]
   96:../main.c     **** 		power = current * 230;
- 586              	 .loc 2 96 0 discriminator 1
- 587 0070 D7ED1B7A 	 flds s15,[r7,#108]
- 588 0074 9FED0F7A 	 flds s14,.L41+28
+ 586              	 .loc 2 96 0
+ 587 0070 D7ED1A7A 	 flds s15,[r7,#104]
+ 588 0074 9FED1B7A 	 flds s14,.L44+36
  589 0078 67EE877A 	 fmuls s15,s15,s14
- 590 007c C7ED1A7A 	 fsts s15,[r7,#104]
-  97:../main.c     **** 
-  98:../main.c     **** 		//POWER STRING
-  99:../main.c     **** 		char power_str [100];
- 100:../main.c     **** 		float2string(power, "Power:", "W", power_str);
- 591              	 .loc 2 100 0 discriminator 1
- 592 0080 3B1D     	 adds r3,r7,#4
- 593 0082 B86E     	 ldr r0,[r7,#104]
- 594 0084 0C49     	 ldr r1,.L41+32
- 595 0086 0D4A     	 ldr r2,.L41+36
- 596 0088 FFF7FEFF 	 bl float2string
- 101:../main.c     **** 
- 102:../main.c     **** 		//DISPLAY THE STRING'S
- 103:../main.c     **** 		ssd1306_text(power_str);
- 597              	 .loc 2 103 0 discriminator 1
- 598 008c 3B1D     	 adds r3,r7,#4
- 599 008e 1846     	 mov r0,r3
- 600 0090 FFF7FEFF 	 bl ssd1306_text
- 601              	.LBE2:
- 104:../main.c     **** 	}
- 602              	 .loc 2 104 0 discriminator 1
- 603 0094 C8E7     	 b .L40
- 604              	.L42:
- 605 0096 00BF     	 .align 3
- 606              	.L41:
- 607 0098 66666666 	 .word 1717986918
- 608 009c 66664A3F 	 .word 1061840486
- 609 00a0 00000000 	 .word SystemCoreClock
- 610 00a4 D34D6210 	 .word 274877907
- 611 00a8 00000000 	 .word I2C_MASTER_0
- 612 00ac 00000000 	 .word delay_ms
- 613 00b0 00000000 	 .word result
- 614 00b4 00006643 	 .word 1130758144
- 615 00b8 18000000 	 .word .LC3
- 616 00bc 20000000 	 .word .LC4
- 617              	 .cfi_endproc
- 618              	.LFE412:
- 620              	 .text
- 621              	.Letext0:
- 622              	 .file 3 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
- 623              	 .file 4 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
- 624              	 .file 5 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
- 625              	 .file 6 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_vadc.h"
- 626              	 .file 7 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/GLOBAL_ADC/global_adc.h"
- 627              	 .file 8 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/ADC_MEASUREMENT/adc_measurement.h"
- 628              	 .file 9 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_usic.h"
- 629              	 .file 10 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_i2c.h"
- 630              	 .file 11 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/I2C_MASTER/i2c_master.h"
- 631              	 .file 12 "../SSD1306/ssd1306_fonts.h"
- 632              	 .file 13 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_spi.h"
- 633              	 .file 14 "../SSD1306/ssd1306.h"
- 634              	 .file 15 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/CMSIS/Include/cmsis_gcc.h"
- 635              	 .file 16 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/CMSIS/Infineon/XMC4500_series/Include/system_XMC4500.h"
- 636              	 .file 17 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/ADC_MEASUREMENT/adc_measurement_extern.h"
- 637              	 .file 18 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/I2C_MASTER/i2c_master_extern.h"
+ 590 007c C7ED1D7A 	 fsts s15,[r7,#116]
+  97:../main.c     **** 		//Smoothing the measurement and compensating environmental influences
+  98:../main.c     **** 		if(voltage <= 0.03){
+ 591              	 .loc 2 98 0
+ 592 0080 F86E     	 ldr r0,[r7,#108]
+ 593 0082 FFF7FEFF 	 bl __aeabi_f2d
+ 594 0086 0246     	 mov r2,r0
+ 595 0088 0B46     	 mov r3,r1
+ 596 008a 1046     	 mov r0,r2
+ 597 008c 1946     	 mov r1,r3
+ 598 008e 0EA3     	 adr r3,.L44+8
+ 599 0090 D3E90023 	 ldrd r2,[r3]
+ 600 0094 FFF7FEFF 	 bl __aeabi_dcmple
+ 601 0098 0346     	 mov r3,r0
+ 602 009a 002B     	 cmp r3,#0
+ 603 009c 05D0     	 beq .L40
+  99:../main.c     **** 			current = 0;
+ 604              	 .loc 2 99 0
+ 605 009e 4FF00003 	 mov r3,#0
+ 606 00a2 BB66     	 str r3,[r7,#104]
+ 100:../main.c     **** 			power = 0;
+ 607              	 .loc 2 100 0
+ 608 00a4 4FF00003 	 mov r3,#0
+ 609 00a8 7B67     	 str r3,[r7,#116]
+ 610              	.L40:
+ 101:../main.c     **** 		}
+ 102:../main.c     **** 
+ 103:../main.c     **** 		//POWER STRING
+ 104:../main.c     **** 		char power_str [100];
+ 105:../main.c     **** 		float2string(power, "Power:", "W", power_str);
+ 611              	 .loc 2 105 0
+ 612 00aa 3B1D     	 adds r3,r7,#4
+ 613 00ac 786F     	 ldr r0,[r7,#116]
+ 614 00ae 0E49     	 ldr r1,.L44+40
+ 615 00b0 0E4A     	 ldr r2,.L44+44
+ 616 00b2 FFF7FEFF 	 bl float2string
+ 106:../main.c     **** 
+ 107:../main.c     **** 		//DISPLAY THE STRING'S
+ 108:../main.c     **** 		ssd1306_text(power_str);
+ 617              	 .loc 2 108 0
+ 618 00b6 3B1D     	 adds r3,r7,#4
+ 619 00b8 1846     	 mov r0,r3
+ 620 00ba FFF7FEFF 	 bl ssd1306_text
+ 621              	.LBE2:
+ 109:../main.c     **** 	}
+ 622              	 .loc 2 109 0
+ 623 00be B3E7     	 b .L42
+ 624              	.L45:
+ 625              	 .align 3
+ 626              	.L44:
+ 627 00c0 66666666 	 .word 1717986918
+ 628 00c4 66664A3F 	 .word 1061840486
+ 629 00c8 B81E85EB 	 .word -343597384
+ 630 00cc 51B89E3F 	 .word 1067366481
+ 631 00d0 00000000 	 .word SystemCoreClock
+ 632 00d4 D34D6210 	 .word 274877907
+ 633 00d8 00000000 	 .word I2C_MASTER_0
+ 634 00dc 00000000 	 .word delay_ms
+ 635 00e0 00000000 	 .word result
+ 636 00e4 00006643 	 .word 1130758144
+ 637 00e8 18000000 	 .word .LC3
+ 638 00ec 20000000 	 .word .LC4
+ 639              	 .cfi_endproc
+ 640              	.LFE412:
+ 642              	 .text
+ 643              	.Letext0:
+ 644              	 .file 3 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 645              	 .file 4 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 646              	 .file 5 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
+ 647              	 .file 6 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_vadc.h"
+ 648              	 .file 7 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/GLOBAL_ADC/global_adc.h"
+ 649              	 .file 8 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/ADC_MEASUREMENT/adc_measurement.h"
+ 650              	 .file 9 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_usic.h"
+ 651              	 .file 10 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_i2c.h"
+ 652              	 .file 11 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/I2C_MASTER/i2c_master.h"
+ 653              	 .file 12 "../SSD1306/ssd1306_fonts.h"
+ 654              	 .file 13 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/XMCLib/inc/xmc_spi.h"
+ 655              	 .file 14 "../SSD1306/ssd1306.h"
+ 656              	 .file 15 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 657              	 .file 16 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Libraries/CMSIS/Infineon/XMC4500_series/Include/system_XMC4500.h"
+ 658              	 .file 17 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/ADC_MEASUREMENT/adc_measurement_extern.h"
+ 659              	 .file 18 "C:/Users/fluky/Documents/GitHub/infineon_xmc4500_power2display/Dave/Generated/I2C_MASTER/i2c_master_extern.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
     {standard input}:20     .text.__NVIC_SetPriority:00000000 $t
@@ -2790,7 +2817,7 @@ DEFINED SYMBOLS
     {standard input}:501    .text.float2string:000000b8 $d
     {standard input}:518    .text.main:00000000 $t
     {standard input}:523    .text.main:00000000 main
-    {standard input}:607    .text.main:00000098 $d
+    {standard input}:627    .text.main:000000c0 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
@@ -2809,6 +2836,7 @@ trunc
 sprintf
 __aeabi_dmul
 __aeabi_d2f
+__aeabi_dcmple
 DAVE_Init
 ssd1306_Init
 SystemCoreClock
